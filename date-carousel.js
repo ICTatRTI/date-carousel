@@ -15,7 +15,8 @@ class DateCarousel extends LitElement {
   static get properties() {
     return { 
       datePicked: { 
-        type: Number 
+        type: Number,
+        reflect: true
       },
       weekInViewport: { 
         type: Number,
@@ -66,6 +67,11 @@ class DateCarousel extends LitElement {
       this._weekInViewPort = name === 'weekinviewport' ? newval : this._weekInViewPort 
       this._yearInViewPort = name === 'yearinviewport' ? newval : this._yearInViewPort 
       if (this._weekInViewPort && this._yearInViewPort) this._calculateDays()
+    } else if (name === 'datepicked') {
+      const datePicked = moment(new Date(parseInt(newval)))
+      this.yearInViewport = parseInt(datePicked.format('YYYY'))
+      this.weekInViewport = parseInt(datePicked.format('W'))
+      this._calculateDays()
     }
   }
 
@@ -73,11 +79,16 @@ class DateCarousel extends LitElement {
     let days = []
     let currentDayCount = 1
     let currentDay = moment(`${this._yearInViewPort} ${this._weekInViewPort}`, 'YYYY WW')
+    let selectedDay = moment(new Date(this.datePicked))
     this._monthYear = currentDay.format('MMMM YYYY')
     while (currentDayCount <= 7) {
       days.push({
         dayOfWeek: currentDay.format('ddd'),
-        dayOfMonth: currentDay.format('D')
+        dayOfMonth: currentDay.format('D'),
+        day: currentDay.format('DD'),
+        month: currentDay.format('MM'),
+        year: currentDay.format('YYYY'),
+        class: (selectedDay.format('YYYYMMDD') === currentDay.format('YYYYMMDD')) ? 'selected' : ''
       })
       currentDay.add(1, 'day')
       currentDayCount++
@@ -97,11 +108,28 @@ class DateCarousel extends LitElement {
     this.weekInViewport = parseInt(oneWeekBack.format('WW'))
   }
 
+  _onDayPick(event) {
+    const day = event.currentTarget.dataset.day
+    const month = event.currentTarget.dataset.month
+    const year = event.currentTarget.dataset.year
+    this.datePicked = moment(`${year} ${month} ${day}`, 'YYYY MM DD').unix()*1000
+  }
+
   render() {
     return html`
       <style>
         :host {
           display: block;
+        }
+        .day-of-week {
+          text-align: center;
+        }
+        .day-of-month {
+          text-align: center;
+        }
+        .selected .day-of-month {
+          background: #CCC;
+          border-radius: 15px;
         }
       </style>
       <div class="month">${this._monthYear}</div>
@@ -111,7 +139,7 @@ class DateCarousel extends LitElement {
             <mwc-icon class="back" @click="${this._back}">chevron_left</mwc-icon>
           </td>
           ${this._days.map(day => html`
-            <td class="day ${day.selected ? html`selected` : ``}">
+            <td @click="${this._onDayPick}" data-day="${day.day}" data-month="${day.month}" data-year="${day.year}" class="day ${day.class}">
               <div class="day-of-week">
                 ${day.dayOfWeek}
               </div>
