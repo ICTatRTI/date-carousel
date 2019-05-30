@@ -31,7 +31,6 @@ class DateCarousel extends LitElement {
 
   constructor() {
     super()
-    this.datePicked = Date.now()
     this.weekInViewport = 0
     this.yearInViewport = 0
     // @TODO 
@@ -44,11 +43,12 @@ class DateCarousel extends LitElement {
   connectedCallback() {
     super.connectedCallback()
     if (!this.weekInViewport) {
-      // @TODO Calculate week given this.datePicked. Do the momentjs trick where you format to week view then parse that week.
-      this.weekInViewport = parseInt(moment(new Date(this.datePicked)).format('W'))
-      this.yearInViewport = new Date(this.datePicked).getFullYear()
+      const initialReferenceDate = this.datePicked ? new Date(this.datePicked) : new Date()
+      this.weekInViewport = parseInt(moment(initialReferenceDate).format('W'))
+      this.yearInViewport = new Date(initialReferenceDate).getFullYear()
     }
   }
+
   attributeChangedCallback(name, oldval, newval) {
     super.attributeChangedCallback(name, oldval, newval);
     if (
