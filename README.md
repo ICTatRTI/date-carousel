@@ -4,6 +4,16 @@
 
 This is a web component for picking a date in a carousel format. Scrolling through dates changes the week in focus. To learn about usage, check out the tests in `test/date-carousel_test.js`.
 
+## Usage
+
+```
+<date-carousel weekinviewport=5 yearinviewport=2019 datepicked=1558526434000></date-carousel>
+```
+
+- `weekinviewport`: This determines which week of a year will be shown on first load. If not defined, it will default to the current week. When users change the week in the viewport, the `on-change-week` event is dispatched and the `weekinviewport` value updates. 
+- `yearinviewport`: Similar to `weekinviewport`, this determines the year displayed and will also update as users scroll through weeks into years. 
+- `datepicked`: This is the unix time in milliseconds of the beginning of the day selected. If not set on load, no date will be selected, but as a date is selected, this attribute will update.
+
 ## Install
 ```
 npm install --save date-carousel
@@ -27,3 +37,6 @@ $ polymer serve
 ```
 $ polymer test
 ```
+
+## Credits
+This component is built using [Lit Element](https://github.com/Polymer/lit-element) for the [Tangerine Project](https://github.com/tangerine-community/tangerine).
