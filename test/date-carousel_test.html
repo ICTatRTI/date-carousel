@@ -22,31 +22,55 @@
       </template>
     </test-fixture>
 
-    <test-fixture id="ChangedPropertyTestFixture">
+    <test-fixture id="DatePickedTestFixture">
       <template>
-        <date-carousel prop1="new-prop1"></date-carousel>
+        <date-carousel datepicked="1558526434000"></date-carousel>
       </template>
     </test-fixture>
 
     <script type="module">
+
+      function animate() {
+        return new Promise(function (res, rej) {
+          let i = 0
+          function step() {
+            requestAnimationFrame(() =>{
+              if (i == 2) {
+                res()
+              } else {
+                i++
+                step()
+              }
+            })
+          }
+          step()
+        })
+      }
+
       suite('date-carousel', () => {
 
-        test('instantiating the element with default properties works', () => {
+        test('should instantiate without a selection on this week', async () => {
           const element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'date-carousel');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello date-carousel!');
-        });
+          await animate()
+          assert.equal(element.shadowRoot.querySelectorAll('.selected').length, 0)
+          // Make sure one of the days in the week series is today.
+          assert.equal(
+            [...element.shadowRoot.querySelectorAll('.day')]
+              .map(dayEl => parseInt(dayEl.dataset.day))
+              .includes(new Date().getDate())
+          , true)
+        })
 
-        test('setting a property on the element works', () => {
-          // Create a test fixture
-          const element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
-        });
+        test('should instantiate with selection', async () => {
+          const element = fixture('DatePickedTestFixture');
+          await animate()
+          assert.equal('22', element.shadowRoot.querySelector('.selected').dataset.day)
+        })
+
+        test('should instantiate on a specific week and year given set date picked')
+        test('should instantiate without a selection on defined week')
+        test('should scroll back and forth')
+        test('should change date picked value after selection')
 
       });
     </script>
