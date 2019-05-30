@@ -28,6 +28,12 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="ViewportDefinedTestFixture">
+      <template>
+        <date-carousel yearinviewport=2008 weekinviewport=2></date-carousel>
+      </template>
+    </test-fixture>
+
     <script type="module">
 
       function animate() {
@@ -67,8 +73,13 @@
           assert.equal('22', element.shadowRoot.querySelector('.selected').dataset.day)
         })
 
-        test('should instantiate on a specific week and year given set date picked')
-        test('should instantiate without a selection on defined week')
+        test('should instantiate on specified week and year without a selection', async () => {
+          const element = fixture('ViewportDefinedTestFixture');
+          await animate()
+          assert.equal(element.shadowRoot.querySelector('.day').dataset.day, '07')
+          assert.equal(element.shadowRoot.querySelector('.month').innerText, 'January 2008')
+        })
+
         test('should scroll back and forth')
         test('should change date picked value after selection')
 
