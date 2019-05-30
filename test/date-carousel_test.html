@@ -36,6 +36,8 @@
 
     <script type="module">
 
+      import moment from 'moment/src/moment'
+
       function animate() {
         return new Promise(function (res, rej) {
           let i = 0
@@ -80,7 +82,22 @@
           assert.equal(element.shadowRoot.querySelector('.month').innerText, 'January 2008')
         })
 
-        test('should scroll back and forth')
+        test('should scroll back and forth', async() => {
+          const element = fixture('BasicTestFixture')
+          await animate()
+          const firstDayData = element.shadowRoot.querySelector('.day').dataset
+          const firstDayDate = moment(`${firstDayData.year} ${firstDayData.month} ${firstDayData.day}`, 'YYYY MM DD')
+          element.shadowRoot.querySelector('.forward').click()
+          await animate()
+          const secondDayData = element.shadowRoot.querySelector('.day').dataset
+          const secondDayDate = moment(`${secondDayData.year} ${secondDayData.month} ${secondDayData.day}`, 'YYYY MM DD')
+          assert.equal(firstDayDate.add(1, 'week').unix(), secondDayDate.unix())
+          element.shadowRoot.querySelector('.back').click()
+          await animate()
+          const thirdDayData = element.shadowRoot.querySelector('.day').dataset
+          assert.equal(`${firstDayData.year} ${firstDayData.month} ${firstDayData.day}`, `${thirdDayData.year} ${thirdDayData.month} ${thirdDayData.day}`)
+        })
+
         test('should change date picked value after selection')
 
       });
