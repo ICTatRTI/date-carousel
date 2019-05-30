@@ -100,12 +100,14 @@ class DateCarousel extends LitElement {
     const oneWeekLater = moment(`${this._yearInViewPort} ${this._weekInViewPort}`, 'YYYY WW').add(1, 'week')
     this.yearInViewport = parseInt(oneWeekLater.format('YYYY'))
     this.weekInViewport = parseInt(oneWeekLater.format('WW'))
+    this.dispatchEvent(new CustomEvent('on-week-change'))
   }
 
   _back() {
     const oneWeekBack = moment(`${this._yearInViewPort} ${this._weekInViewPort}`, 'YYYY WW').subtract(1, 'week')
     this.yearInViewport = parseInt(oneWeekBack.format('YYYY'))
     this.weekInViewport = parseInt(oneWeekBack.format('WW'))
+    this.dispatchEvent(new CustomEvent('on-week-change'))
   }
 
   _onDayPick(event) {
@@ -113,6 +115,7 @@ class DateCarousel extends LitElement {
     const month = event.currentTarget.dataset.month
     const year = event.currentTarget.dataset.year
     this.datePicked = moment(`${year} ${month} ${day}`, 'YYYY MM DD').unix()*1000
+    this.dispatchEvent(new CustomEvent('on-day-pick'))
   }
 
   render() {

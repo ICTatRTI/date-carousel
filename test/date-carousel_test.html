@@ -85,6 +85,8 @@
         test('should scroll back and forth', async() => {
           const element = fixture('BasicTestFixture')
           await animate()
+          let weekChangeCount = 0
+          element.addEventListener('on-week-change', () => weekChangeCount++)
           const firstDayData = element.shadowRoot.querySelector('.day').dataset
           const firstDayDate = moment(`${firstDayData.year} ${firstDayData.month} ${firstDayData.day}`, 'YYYY MM DD')
           element.shadowRoot.querySelector('.forward').click()
@@ -96,16 +98,20 @@
           await animate()
           const thirdDayData = element.shadowRoot.querySelector('.day').dataset
           assert.equal(`${firstDayData.year} ${firstDayData.month} ${firstDayData.day}`, `${thirdDayData.year} ${thirdDayData.month} ${thirdDayData.day}`)
+          assert.equal(weekChangeCount, 2)
         })
 
         test('should change date picked value after selection', async () => {
           const element = fixture('BasicTestFixture')
+          let onDayPickCount = 0
+          element.addEventListener('on-day-pick', () => onDayPickCount++)
           await animate()
           const dayElForSelection = element.shadowRoot.querySelector('.day')
           dayElForSelection.click()
           await animate()
           assert(!!element.datePicked, true)
-          dayElForSelection.classList.contains('selected')
+          assert(dayElForSelection.classList.contains('selected'), true)
+          assert(onDayPickCount, 1)
         })
 
       });
