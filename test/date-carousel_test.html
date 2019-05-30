@@ -98,7 +98,15 @@
           assert.equal(`${firstDayData.year} ${firstDayData.month} ${firstDayData.day}`, `${thirdDayData.year} ${thirdDayData.month} ${thirdDayData.day}`)
         })
 
-        test('should change date picked value after selection')
+        test('should change date picked value after selection', async () => {
+          const element = fixture('BasicTestFixture')
+          await animate()
+          const dayElForSelection = element.shadowRoot.querySelector('.day')
+          dayElForSelection.click()
+          await animate()
+          assert(!!element.datePicked, true)
+          dayElForSelection.classList.contains('selected')
+        })
 
       });
     </script>
