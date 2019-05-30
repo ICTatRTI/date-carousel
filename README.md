@@ -10,7 +10,7 @@ npm install --save date-carousel
 ```
 
 ```
-import `date-carousel/date-carousel.js
+import 'date-carousel/date-carousel.js'
 ```
 
 ## Develop
