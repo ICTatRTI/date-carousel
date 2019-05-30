@@ -7,6 +7,10 @@
     "lit-element": "^2.1.0",
     "moment": "^2.24.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ICTatRTI/date-carousel.git"
+  },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.0.0-pre.19",
     "@polymer/test-fixture": "^4.0.2",
