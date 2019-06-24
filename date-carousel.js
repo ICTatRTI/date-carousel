@@ -124,6 +124,15 @@ class DateCarousel extends LitElement {
         :host {
           display: block;
         }
+        table {
+          width: var(--date-carousel-table-width, 100%);
+          font-size: var(--date-carousel-table-font-size, 1em);
+          color: var(--date-carousel-table-color, #000);
+        }
+        .month {
+          font-size: var(--date-carousel-month-font-size, 1em);
+          color: var(--date-carousel-month-color, #000);
+        }
         .day-of-week {
           text-align: center;
         }
@@ -131,7 +140,8 @@ class DateCarousel extends LitElement {
           text-align: center;
         }
         .selected .day-of-month {
-          background: #CCC;
+          background: var(--date-carousel-selected-background, #CCC);
+          color: var(--date-carousel-selected-color, #000);
           border-radius: 15px;
         }
       </style>
