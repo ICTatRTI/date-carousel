@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.2.1
+- Fix column spacing for buttons and make button size overideable.
+
 ## v1.2.0
 - Added use of CSS variables for parent apps to override.
 
