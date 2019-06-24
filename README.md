@@ -27,6 +27,9 @@ import 'date-carousel/date-carousel.js'
 - `on-day-picked`: When a user selects a day in the carousel, this event will dispatch.
 - `on-week-change`: When users move forward or back in the date carousel, this event will dispatch.
 
+### Styling
+See CSS variables in the style tag of the component.
+
 ## Develop / Demo
 ```
 git clone ...
