@@ -129,6 +129,9 @@ class DateCarousel extends LitElement {
           font-size: var(--date-carousel-table-font-size, 1em);
           color: var(--date-carousel-table-color, #000);
         }
+        mwc-icon {
+          font-size: var(--date-carousel-button-font-size, --date-carousel-table-font-size, 1em);
+        }
         .month {
           font-size: var(--date-carousel-month-font-size, 1em);
           color: var(--date-carousel-month-color, #000);
@@ -144,11 +147,15 @@ class DateCarousel extends LitElement {
           color: var(--date-carousel-selected-color, #000);
           border-radius: 15px;
         }
+        td.button {
+            white-space:nowrap;
+            width: 1px
+        }
       </style>
       <div class="month">${this._monthYear}</div>
       <table class="days">
         <tr>
-          <td>
+          <td class="button">
             <mwc-icon class="back" @click="${this._back}">chevron_left</mwc-icon>
           </td>
           ${this._days.map(day => html`
@@ -161,7 +168,7 @@ class DateCarousel extends LitElement {
               </div>
             </td>
           `)}
-          <td>
+          <td class="button">
             <mwc-icon class="forward" @click="${this._next}">chevron_right</mwc-icon>
           </td>
         </tr>
