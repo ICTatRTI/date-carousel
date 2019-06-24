@@ -1,7 +1,7 @@
 {
   "name": "date-carousel",
   "main": "date-carousel.js",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "scripts": {
     "start": "./node_modules/.bin/polymer serve",
     "test": "./node_modules/.bin/polymer test"
