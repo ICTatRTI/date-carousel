@@ -13,72 +13,20 @@ import moment from 'moment/src/moment'
 class DateCarousel extends LitElement {
 
   static get properties() {
-    return { 
-      datePicked: { 
-        type: Number,
-        reflect: true
-      },
-      weekInViewport: { 
-        type: Number,
-        reflect:true
-      },
-      yearInViewport: { 
-        type: Number, 
-        reflect:true 
-      }
-    };
+    return { _days: { type: Array } };
   }
 
   constructor() {
     super()
-    this.weekInViewport = 0
-    this.yearInViewport = 0
-    // @TODO 
-    this._days = []
-    this._month = ''
-    this._weekInViewPort = 0
-    this._yearInViewPort = 0
-  }
-
-  connectedCallback() {
-    super.connectedCallback()
-    if (!this.weekInViewport) {
-      const initialReferenceDate = this.datePicked ? new Date(this.datePicked) : new Date()
-      this.weekInViewport = parseInt(moment(initialReferenceDate).format('W'))
-      this.yearInViewport = new Date(initialReferenceDate).getFullYear()
-    }
-  }
-
-  attributeChangedCallback(name, oldval, newval) {
-    super.attributeChangedCallback(name, oldval, newval);
-    if (
-      (name === 'weekinviewport' || name === 'yearinviewport')
-      &&
-      (
-        (
-          name === 'weekinviewport' && this._weekInViewPort !== newval
-        )
-        ||
-        (
-          name === 'yearinviewport' && this._yearInViewPort !== newval
-        )
-      )
-    ) {
-      this._weekInViewPort = name === 'weekinviewport' ? newval : this._weekInViewPort 
-      this._yearInViewPort = name === 'yearinviewport' ? newval : this._yearInViewPort 
-      if (this._weekInViewPort && this._yearInViewPort) this._calculateDays()
-    } else if (name === 'datepicked') {
-      const datePicked = moment(new Date(parseInt(newval)))
-      this.yearInViewport = parseInt(datePicked.format('YYYY'))
-      this.weekInViewport = parseInt(datePicked.format('W'))
-      this._calculateDays()
-    }
+    this.week = moment().format('W')
+    this.year = moment().format('YYYY')
+    this._calculateDays()
   }
 
   _calculateDays() {
     let days = []
     let currentDayCount = 1
-    let currentDay = moment(`${this._yearInViewPort} ${this._weekInViewPort}`, 'YYYY WW')
+    let currentDay = moment(`${this.year} ${this.week}`, 'YYYY WW')
     let selectedDay = moment(new Date(this.datePicked))
     this._monthYear = currentDay.format('MMMM YYYY')
     while (currentDayCount <= 7) {
@@ -97,16 +45,18 @@ class DateCarousel extends LitElement {
   }
 
   _next() {
-    const oneWeekLater = moment(`${this._yearInViewPort} ${this._weekInViewPort}`, 'YYYY WW').add(1, 'week')
-    this.yearInViewport = parseInt(oneWeekLater.format('YYYY'))
-    this.weekInViewport = parseInt(oneWeekLater.format('WW'))
+    const oneWeekLater = moment(`${this.year} ${this.week}`, 'YYYY WW').add(1, 'week')
+    this.year = parseInt(oneWeekLater.format('YYYY'))
+    this.week = parseInt(oneWeekLater.format('WW'))
+    this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
 
   _back() {
-    const oneWeekBack = moment(`${this._yearInViewPort} ${this._weekInViewPort}`, 'YYYY WW').subtract(1, 'week')
-    this.yearInViewport = parseInt(oneWeekBack.format('YYYY'))
-    this.weekInViewport = parseInt(oneWeekBack.format('WW'))
+    const oneWeekBack = moment(`${this.year} ${this.week}`, 'YYYY WW').subtract(1, 'week')
+    this.year = parseInt(oneWeekBack.format('YYYY'))
+    this.week = parseInt(oneWeekBack.format('WW'))
+    this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
 
@@ -115,6 +65,7 @@ class DateCarousel extends LitElement {
     const month = event.currentTarget.dataset.month
     const year = event.currentTarget.dataset.year
     this.datePicked = moment(`${year} ${month} ${day}`, 'YYYY MM DD').unix()*1000
+    this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-day-pick'))
   }
 
