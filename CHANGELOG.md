@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v2.0.0
+- Upgraded to lit-element v2.3.1 but had to drop support for setting year/week/selection on component init via attributes.
+
 ## v1.2.1
 - Fix column spacing for buttons and make button size overideable.
 
