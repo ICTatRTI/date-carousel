@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v3.0.0
+- Fix timezone errors in DateCarousel.datePicked API to be formatted as YYYY-MM-DD, not unix timestamp. 
+
 ## v2.0.0
 - Upgraded to lit-element v2.3.1 but had to drop support for setting year/week/selection on component init via attributes.
 
