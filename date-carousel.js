@@ -27,7 +27,7 @@ class DateCarousel extends LitElement {
     let days = []
     let currentDayCount = 1
     let currentDay = moment(`${this.year} ${this.week}`, 'YYYY WW')
-    let selectedDay = moment(new Date(this.datePicked))
+    let selectedDay = moment(this.datePicked)
     this._monthYear = currentDay.format('MMMM YYYY')
     while (currentDayCount <= 7) {
       days.push({
@@ -64,7 +64,7 @@ class DateCarousel extends LitElement {
     const day = event.currentTarget.dataset.day
     const month = event.currentTarget.dataset.month
     const year = event.currentTarget.dataset.year
-    this.datePicked = moment(`${year} ${month} ${day}`, 'YYYY MM DD').unix()*1000
+    this.datePicked = `${year}-${month}-${day}`
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-day-pick'))
   }
