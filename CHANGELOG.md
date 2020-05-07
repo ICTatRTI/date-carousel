@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v5.0.0
+- Standardize on API of DateCarousel.weekInView and DateCarousel.datePicked in moment formats of 'YYYY-w' and 'YYYY-MM-DD'.
+
 ## v4.0.0
 - Fix issue causing week to start on Monday.
 - Standardize on moment format 'YYYY' for year and moment format 'w' for week.
