@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v4.0.0
+- Fix issue causing week to start on Monday.
+- Standardize on moment format 'YYYY' for year and moment format 'w' for week.
+
 ## v3.0.0
 - Fix timezone errors in DateCarousel.datePicked API to be formatted as YYYY-MM-DD, not unix timestamp. 
 
