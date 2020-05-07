@@ -12,13 +12,14 @@ import moment from 'moment/src/moment'
  */
 class DateCarousel extends LitElement {
 
+  // We have to list _days as a property otherwise change detection in the lit template doesn't work. 
   static get properties() {
     return { _days: { type: Array } };
   }
 
   constructor() {
     super()
-    this.week = moment().format('W')
+    this.week = moment().format('w')
     this.year = moment().format('YYYY')
     this._calculateDays()
   }
@@ -26,9 +27,7 @@ class DateCarousel extends LitElement {
   _calculateDays() {
     let days = []
     let currentDayCount = 1
-    let currentDay = moment(`${this.year} ${this.week}`, 'YYYY WW')
-    let selectedDay = moment(this.datePicked)
-    this._monthYear = currentDay.format('MMMM YYYY')
+    let currentDay = moment(`${this.year} ${this.week}`, 'YYYY w')
     while (currentDayCount <= 7) {
       days.push({
         dayOfWeek: currentDay.format('ddd'),
@@ -36,26 +35,27 @@ class DateCarousel extends LitElement {
         day: currentDay.format('DD'),
         month: currentDay.format('MM'),
         year: currentDay.format('YYYY'),
-        class: (selectedDay.format('YYYYMMDD') === currentDay.format('YYYYMMDD')) ? 'selected' : ''
+        class: (moment(this.datePicked).format('YYYYMMDD') === currentDay.format('YYYYMMDD')) ? 'selected' : ''
       })
       currentDay.add(1, 'day')
       currentDayCount++
     }
     this._days = days
+    this._monthYear = currentDay.format('MMMM YYYY')
   }
 
   _next() {
-    const oneWeekLater = moment(`${this.year} ${this.week}`, 'YYYY WW').add(1, 'week')
-    this.year = parseInt(oneWeekLater.format('YYYY'))
-    this.week = parseInt(oneWeekLater.format('WW'))
+    const oneWeekLater = moment(`${this.year} ${this.week}`, 'YYYY w').add(1, 'week')
+    this.year = oneWeekLater.format('YYYY')
+    this.week = oneWeekLater.format('w')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
 
   _back() {
-    const oneWeekBack = moment(`${this.year} ${this.week}`, 'YYYY WW').subtract(1, 'week')
-    this.year = parseInt(oneWeekBack.format('YYYY'))
-    this.week = parseInt(oneWeekBack.format('WW'))
+    const oneWeekBack = moment(`${this.year} ${this.week}`, 'YYYY w').subtract(1, 'week')
+    this.year = oneWeekBack.format('YYYY')
+    this.week = oneWeekBack.format('w')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
@@ -100,17 +100,20 @@ class DateCarousel extends LitElement {
         }
         td.button {
             white-space:nowrap;
-            width: 1px
+            width: 1px;
+        }
+        .clickable {
+          cursor: pointer;
         }
       </style>
       <div class="month">${this._monthYear}</div>
       <table class="days">
         <tr>
-          <td class="button">
-            <mwc-icon class="back" @click="${this._back}">chevron_left</mwc-icon>
+          <td class="clickable button" @click="${this._back}">
+            <mwc-icon class="back">chevron_left</mwc-icon>
           </td>
           ${this._days.map(day => html`
-            <td @click="${this._onDayPick}" data-day="${day.day}" data-month="${day.month}" data-year="${day.year}" class="day ${day.class}">
+            <td @click="${this._onDayPick}" data-day="${day.day}" data-month="${day.month}" data-year="${day.year}" class="clickable day ${day.class}">
               <div class="day-of-week">
                 ${day.dayOfWeek}
               </div>
@@ -119,8 +122,8 @@ class DateCarousel extends LitElement {
               </div>
             </td>
           `)}
-          <td class="button">
-            <mwc-icon class="forward" @click="${this._next}">chevron_right</mwc-icon>
+          <td class="clickable button" @click="${this._next}">
+            <mwc-icon class="forward">chevron_right</mwc-icon>
           </td>
         </tr>
       </table>
