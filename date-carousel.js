@@ -2,6 +2,9 @@ import { LitElement, html } from 'lit-element'
 import '@material/mwc-icon/mwc-icon.js'
 import moment from 'moment/src/moment'
 
+export const FORMAT_YEAR_WEEK = 'YYYY-w'
+export const FORMAT_YEAR_MONTH_DAY = 'YYYY-MM-DD'
+
 /**
  * `date-carousel`
  * 
@@ -19,15 +22,15 @@ class DateCarousel extends LitElement {
 
   constructor() {
     super()
-    this.week = moment().format('w')
-    this.year = moment().format('YYYY')
+    this.weekInView = moment().format(FORMAT_YEAR_WEEK)
+    this.datePicked = moment().format(FORMAT_YEAR_MONTH_DAY)
     this._calculateDays()
   }
 
   _calculateDays() {
     let days = []
     let currentDayCount = 1
-    let currentDay = moment(`${this.year} ${this.week}`, 'YYYY w')
+    let currentDay = moment(this.weekInView, FORMAT_YEAR_WEEK)
     while (currentDayCount <= 7) {
       days.push({
         dayOfWeek: currentDay.format('ddd'),
@@ -45,17 +48,17 @@ class DateCarousel extends LitElement {
   }
 
   _next() {
-    const oneWeekLater = moment(`${this.year} ${this.week}`, 'YYYY w').add(1, 'week')
-    this.year = oneWeekLater.format('YYYY')
-    this.week = oneWeekLater.format('w')
+    this.weekInView = moment(this.weekInView, FORMAT_YEAR_WEEK)
+      .add(1, 'week')
+      .format(FORMAT_YEAR_WEEK)
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
 
   _back() {
-    const oneWeekBack = moment(`${this.year} ${this.week}`, 'YYYY w').subtract(1, 'week')
-    this.year = oneWeekBack.format('YYYY')
-    this.week = oneWeekBack.format('w')
+    this.weekInView = moment(this.weekInView, FORMAT_YEAR_WEEK)
+      .subtract(1, 'week')
+      .format(FORMAT_YEAR_WEEK)
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
