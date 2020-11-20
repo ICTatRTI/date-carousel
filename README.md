@@ -5,6 +5,9 @@
 This is a web component for picking a date in a carousel format. Scrolling through dates changes the week in focus. To learn about usage, check out the tests in `test/date-carousel_test.js`.
 
 ## Install into your app
+
+If you are using a javascript bundler like Webpack or Rollup, npm install the module and import it in your JS/TS code.
+
 ```
 npm install --save date-carousel
 ```
