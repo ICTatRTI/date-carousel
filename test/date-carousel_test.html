@@ -36,7 +36,7 @@
 
     <script type="module">
 
-      import moment from 'moment/src/moment'
+      import { DateTime } from 'luxon'
 
       function animate() {
         return new Promise(function (res, rej) {
@@ -92,12 +92,12 @@
           let weekChangeCount = 0
           element.addEventListener('on-week-change', () => weekChangeCount++)
           const firstDayData = element.shadowRoot.querySelector('.day').dataset
-          const firstDayDate = moment(`${firstDayData.year} ${firstDayData.month} ${firstDayData.day}`, 'YYYY MM DD')
+          const firstDayDate = DateTime.fromISO(`${firstDayData.year}-${firstDayData.month}-${firstDayData.day}`)
           element.shadowRoot.querySelector('.forward').click()
           await animate()
           const secondDayData = element.shadowRoot.querySelector('.day').dataset
-          const secondDayDate = moment(`${secondDayData.year} ${secondDayData.month} ${secondDayData.day}`, 'YYYY MM DD')
-          assert.equal(firstDayDate.add(1, 'week').unix(), secondDayDate.unix())
+          const secondDayDate = DateTime.fromISO(`${secondDayData.year}-${secondDayData.month}-${secondDayData.day}`)
+          assert.equal(firstDayDate.plus({weeks: 1}).toISO(), secondDayDate.toISO())
           element.shadowRoot.querySelector('.back').click()
           await animate()
           const thirdDayData = element.shadowRoot.querySelector('.day').dataset
