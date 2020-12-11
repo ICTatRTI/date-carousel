@@ -19,19 +19,22 @@ class DateCarousel extends LitElement {
   static get properties() {
     return { 
       _days: { type: Array },
-      _useEthiopianCalendar: { type: Boolean }
+      useEthiopianCalendar: { type: Boolean }
     };
   }
 
   constructor() {
     super()
+  }
 
-    this._useEthiopianCalendar = false
+  connectedCallback() {
+    super.connectedCallback()
 
     var now = DateTime.local()
-    if (this._useEthiopianCalendar) {      
+    if (this.useEthiopianCalendar) {
       now = now.reconfigure({ outputCalendar: 'ethiopic' })
     }
+
     this.weekInView = now
     this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
     this._calculateDays()
