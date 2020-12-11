@@ -1,9 +1,9 @@
 import { LitElement, html } from 'lit-element'
 import '@material/mwc-icon/mwc-icon.js'
-import moment from 'moment/src/moment'
+import { DateTime } from 'luxon'
 
-export const FORMAT_YEAR_WEEK = 'YYYY-w'
-export const FORMAT_YEAR_MONTH_DAY = 'YYYY-MM-DD'
+export const FORMAT_YEAR_WEEK = 'yyyy-c'
+export const FORMAT_YEAR_MONTH_DAY = 'yyyy-LL-dd'
 
 /**
  * `date-carousel`
@@ -17,48 +17,54 @@ class DateCarousel extends LitElement {
 
   // We have to list _days as a property otherwise change detection in the lit template doesn't work. 
   static get properties() {
-    return { _days: { type: Array } };
+    return { 
+      _days: { type: Array },
+      _useEthiopianCalendar: { type: Boolean }
+    };
   }
 
   constructor() {
     super()
-    this.weekInView = moment().format(FORMAT_YEAR_WEEK)
-    this.datePicked = moment().format(FORMAT_YEAR_MONTH_DAY)
+
+    this._useEthiopianCalendar = false
+
+    var now = DateTime.local()
+    if (this._useEthiopianCalendar) {      
+      now = now.reconfigure({ outputCalendar: 'ethiopic' })
+    }
+    this.weekInView = now
+    this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
     this._calculateDays()
   }
 
   _calculateDays() {
     let days = []
     let currentDayCount = 1
-    let currentDay = moment(this.weekInView, FORMAT_YEAR_WEEK)
+    let currentDay = this.weekInView
     while (currentDayCount <= 7) {
       days.push({
-        dayOfWeek: currentDay.format('ddd'),
-        dayOfMonth: currentDay.format('D'),
-        day: currentDay.format('DD'),
-        month: currentDay.format('MM'),
-        year: currentDay.format('YYYY'),
-        class: (moment(this.datePicked).format('YYYYMMDD') === currentDay.format('YYYYMMDD')) ? 'selected' : ''
+        dayOfWeek: currentDay.toFormat('ccc'),
+        dayOfMonth: currentDay.toFormat('d'),
+        day: currentDay.toFormat('dd'),
+        month: currentDay.toFormat('LL'),
+        year: currentDay.toFormat('yyyy'),
+        class: (this.datePicked === currentDay.toFormat(FORMAT_YEAR_MONTH_DAY)) ? 'selected' : ''
       })
-      currentDay.add(1, 'day')
+      currentDay = currentDay.plus({days: 1})
       currentDayCount++
     }
     this._days = days
-    this._monthYear = currentDay.format('MMMM YYYY')
+    this._monthYear = currentDay.toFormat('LLL yyyy')
   }
 
   _next() {
-    this.weekInView = moment(this.weekInView, FORMAT_YEAR_WEEK)
-      .add(1, 'week')
-      .format(FORMAT_YEAR_WEEK)
+    this.weekInView = this.weekInView.plus({weeks: 1})
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
 
   _back() {
-    this.weekInView = moment(this.weekInView, FORMAT_YEAR_WEEK)
-      .subtract(1, 'week')
-      .format(FORMAT_YEAR_WEEK)
+    this.weekInView = this.weekInView.minus({weeks: 1})
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
