@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v5.1.0
+- Add support for Ethiopian Calendar. Use the `useEthiopianCalendar` attribute. Example: `<date-carousel useEthiopianCalendar></date-carousel>`.
+
 ## v5.0.0
 - Standardize on API of DateCarousel.weekInView and DateCarousel.datePicked in moment formats of 'YYYY-w' and 'YYYY-MM-DD'.
 
