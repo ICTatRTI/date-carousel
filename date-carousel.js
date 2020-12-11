@@ -57,7 +57,7 @@ class DateCarousel extends LitElement {
       currentDayCount++
     }
     this._days = days
-    this._monthYear = currentDay.toFormat('LLL yyyy')
+    this._monthYear = currentDay.toFormat('LLLL yyyy')
   }
 
   _next() {
