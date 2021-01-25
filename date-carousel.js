@@ -37,6 +37,8 @@ class DateCarousel extends LitElement {
 
     this.weekInView = now
     this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
+    this.weekUnixValue = now.toFormat('X') // unix timestamp in seconds
+    this.dateUnixValue = now.toFormat('X') // unix timestamp in seconds
     this._calculateDays()
   }
 
@@ -44,6 +46,7 @@ class DateCarousel extends LitElement {
     let days = []
     let currentDayCount = 1
     let currentDay = this.weekInView
+    this._monthYear = currentDay.toFormat('LLLL yyyy')
     while (currentDayCount <= 7) {
       days.push({
         dayOfWeek: currentDay.toFormat('ccc'),
@@ -51,23 +54,25 @@ class DateCarousel extends LitElement {
         day: currentDay.toFormat('dd'),
         month: currentDay.toFormat('LL'),
         year: currentDay.toFormat('yyyy'),
-        class: (this.datePicked === currentDay.toFormat(FORMAT_YEAR_MONTH_DAY)) ? 'selected' : ''
+        unix: currentDay.toFormat('X'),
+        class: (this.dateUnixValue === currentDay.toFormat('X')) ? 'selected' : ''
       })
       currentDay = currentDay.plus({days: 1})
       currentDayCount++
     }
     this._days = days
-    this._monthYear = currentDay.toFormat('LLLL yyyy')
   }
 
   _next() {
     this.weekInView = this.weekInView.plus({weeks: 1})
+    this.weekUnixValue = this.weekInView.toFormat('X')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
 
   _back() {
     this.weekInView = this.weekInView.minus({weeks: 1})
+    this.weekUnixValue = this.weekInView.toFormat('X')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
@@ -77,6 +82,7 @@ class DateCarousel extends LitElement {
     const month = event.currentTarget.dataset.month
     const year = event.currentTarget.dataset.year
     this.datePicked = `${year}-${month}-${day}`
+    this.dateUnixValue = event.currentTarget.dataset.unix
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-day-pick'))
   }
@@ -125,7 +131,7 @@ class DateCarousel extends LitElement {
             <mwc-icon class="back">chevron_left</mwc-icon>
           </td>
           ${this._days.map(day => html`
-            <td @click="${this._onDayPick}" data-day="${day.day}" data-month="${day.month}" data-year="${day.year}" class="clickable day ${day.class}">
+            <td @click="${this._onDayPick}" data-day="${day.day}" data-month="${day.month}" data-year="${day.year}" data-unix="${day.unix}" class="clickable day ${day.class}">
               <div class="day-of-week">
                 ${day.dayOfWeek}
               </div>
