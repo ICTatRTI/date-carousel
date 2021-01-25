@@ -91,6 +91,20 @@ class DateCarousel extends LitElement {
     this.dispatchEvent(new CustomEvent('on-day-pick'))
   }
 
+  _today() {
+    var now = DateTime.local()
+    if (this.useEthiopianCalendar) {
+      now = now.reconfigure({ outputCalendar: 'ethiopic' })
+    }
+
+    this.weekInView = now
+    this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
+    this.weekUnixValue = now.toFormat('X')
+    this.dateUnixValue = now.toFormat('X')
+    this._calculateDays()
+    this.dispatchEvent(new CustomEvent('on-day-pick'))
+  }
+
   render() {
     return html`
       <style>
@@ -128,7 +142,16 @@ class DateCarousel extends LitElement {
           cursor: pointer;
         }
       </style>
-      <div class="month">${this._monthYear}</div>
+      <table class="header">
+        <tr>
+          <td>
+            <div class="month">${this._monthYear}</div>
+          </td>
+          <td class="clickable button" @click="${this._today}">
+            <button class="today">Today</button>
+          </td>
+        </tr>
+      </table>
       <table class="days">
         <tr>
           <td class="clickable button" @click="${this._back}">
