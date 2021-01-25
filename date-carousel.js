@@ -66,6 +66,8 @@ class DateCarousel extends LitElement {
   _next() {
     this.weekInView = this.weekInView.plus({weeks: 1})
     this.weekUnixValue = this.weekInView.toFormat('X')
+    this.datePicked = this.weekInView
+    this.dateUnixValue = this.datePicked.toFormat('X')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
@@ -73,6 +75,8 @@ class DateCarousel extends LitElement {
   _back() {
     this.weekInView = this.weekInView.minus({weeks: 1})
     this.weekUnixValue = this.weekInView.toFormat('X')
+    this.datePicked = this.weekInView
+    this.dateUnixValue = this.datePicked.toFormat('X')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
