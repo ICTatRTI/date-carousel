@@ -30,6 +30,9 @@ import 'date-carousel/date-carousel.js'
 - `datePicked`: The ISO string (yyyy-mm-dd) of value of the currently selected day. 
 - `dateUnixValue`: The unix timestamp value in seconds of the currently selected day. 
 
+**NOTE**
+Unix timezone values do not contain timezone or daylight savings information. Use them wisely.
+
 ### Events
 - `on-day-picked`: When a user selects a day in the carousel, the attributes `datePicked` and `dateUnixValue` are updated and the event is dispatched.
 - `on-week-change`: When users move forward or back in the date carousel, the attributes `weekInView` and `weekUnixValue` are updated and the event is dispatched.
