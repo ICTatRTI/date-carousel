@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v5.2.0
+- Add unix timestamp values in seconds to the API as DateCarousel.weekUnixValue and DateCarousel.dateUnixValue
+- Add a 'Today' button which resets the carousel to today's date
+- Change the logic when clicking forward or backward to select the first day of the new week.
+
 ## v5.1.0
 - Add support for Ethiopian Calendar. Use the `useEthiopianCalendar` attribute. Example: `<date-carousel useEthiopianCalendar></date-carousel>`.
 

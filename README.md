@@ -18,17 +18,21 @@ import 'date-carousel/date-carousel.js'
 
 ## Usage
 ```
-<date-carousel weekinviewport=5 yearinviewport=2019 datepicked=1558526434000></date-carousel>
+<date-carousel (on-week-change)="onWeekChange($event)" (on-day-pick)="onDayPick($event)"></date-carousel>
+```
+```
+<date-carousel useEthiopianCalendar (on-week-change)="onWeekChange($event)" (on-day-pick)="onDayPick($event)"></date-carousel>
 ```
 
 ### Attributes
-- `weekinviewport`: This determines which week of a year will be shown on first load. If not defined, it will default to the current week. When users change the week in the viewport, the `on-change-week` event is dispatched and the `weekinviewport` value updates. 
-- `yearinviewport`: Similar to `weekinviewport`, this determines the year displayed and will also update as users scroll through weeks into years. 
-- `datepicked`: This is the unix time in milliseconds of the beginning of the day selected. If not set on load, no date will be selected, but as a date is selected, this attribute will update.
+- `weekInView`: The ISO string (yyyy-mm-dd) of value of the first day of the current week.
+- `weekUnixValue`: The unix timestamp value in seconds of the first day of the current week.
+- `datePicked`: The ISO string (yyyy-mm-dd) of value of the currently selected day. 
+- `dateUnixValue`: The unix timestamp value in seconds of the currently selected day. 
 
 ### Events
-- `on-day-picked`: When a user selects a day in the carousel, this event will dispatch.
-- `on-week-change`: When users move forward or back in the date carousel, this event will dispatch.
+- `on-day-picked`: When a user selects a day in the carousel, the attributes `datePicked` and `dateUnixValue` are updated and the event is dispatched.
+- `on-week-change`: When users move forward or back in the date carousel, the attributes `weekInView` and `weekUnixValue` are updated and the event is dispatched.
 
 ### Styling
 See CSS variables in the style tag of the component.
