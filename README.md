@@ -31,7 +31,7 @@ import 'date-carousel/date-carousel.js'
 - `dateUnixValue`: The unix timestamp value in seconds of the currently selected day. 
 
 **NOTE**
-Unix timezone values do not contain timezone or daylight savings information. Use them wisely.
+Unix timestamp values do not contain timezone or daylight savings information. Use them wisely.
 
 ### Events
 - `on-day-picked`: When a user selects a day in the carousel, the attributes `datePicked` and `dateUnixValue` are updated and the event is dispatched.

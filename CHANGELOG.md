@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## v5.2.0
+- Improved the month header text
+- make Monday the first day of the week in the carousel
 - Add unix timestamp values in seconds to the API as DateCarousel.weekUnixValue and DateCarousel.dateUnixValue
 - Add a 'Today' button which resets the carousel to today's date
 - Change the logic when clicking forward or backward to select the first day of the new week.
