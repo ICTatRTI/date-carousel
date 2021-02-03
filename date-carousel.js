@@ -42,11 +42,31 @@ class DateCarousel extends LitElement {
     this._calculateDays()
   }
 
+  _calculateHeaderText() {
+    let firstDayOfWeek = this.weekInView
+    let lastDayOfWeek = this.weekInView.plus({days: 6})
+
+    const firstDayOfWeekYear = parseInt(firstDayOfWeek.toFormat('yyyy'))
+    const lastDayOfWeekYear = parseInt(lastDayOfWeek.toFormat('yyyy'))
+
+    let headerText
+    if (firstDayOfWeekYear !== lastDayOfWeekYear) {
+      // the week stradles a new year --- show year text in both strings
+      headerText = `${firstDayOfWeek.toFormat('dd LLL yyyy')} - ${lastDayOfWeek.toFormat('dd LLL yyyy')}`
+    } else {
+      // the week is in the same year --- only show the year at the end
+      headerText = `${firstDayOfWeek.toFormat('dd LLL')} - ${lastDayOfWeek.toFormat('dd LLL yyyy')}`
+    }
+    return headerText
+  }
+
   _calculateDays() {
     let days = []
     let currentDayCount = 1
     let currentDay = this.weekInView
-    this._monthYear = currentDay.toFormat('LLLL yyyy')
+
+    this._headerText = this._calculateHeaderText()
+
     while (currentDayCount <= 7) {
       days.push({
         dayOfWeek: currentDay.toFormat('ccc'),
@@ -145,7 +165,7 @@ class DateCarousel extends LitElement {
       <table class="header">
         <tr>
           <td>
-            <div class="month">${this._monthYear}</div>
+            <div class="month">${this._headerText}</div>
           </td>
           <td class="clickable button" @click="${this._today}">
             <button class="today">Today</button>
