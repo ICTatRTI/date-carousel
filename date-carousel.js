@@ -36,8 +36,8 @@ class DateCarousel extends LitElement {
     }
 
     this.weekInView = now
-    this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
     this.weekUnixValue = now.toFormat('X') // unix timestamp in seconds
+    this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
     this.dateUnixValue = now.toFormat('X') // unix timestamp in seconds
     this._calculateDays()
   }
@@ -75,7 +75,7 @@ class DateCarousel extends LitElement {
         month: currentDay.toFormat('LL'),
         year: currentDay.toFormat('yyyy'),
         unix: currentDay.toFormat('X'),
-        class: (this.dateUnixValue === currentDay.toFormat('X')) ? 'selected' : ''
+        class: (this.datePicked === currentDay.toFormat(FORMAT_YEAR_MONTH_DAY)) ? 'selected' : ''
       })
       currentDay = currentDay.plus({days: 1})
       currentDayCount++
@@ -86,8 +86,8 @@ class DateCarousel extends LitElement {
   _next() {
     this.weekInView = this.weekInView.plus({weeks: 1})
     this.weekUnixValue = this.weekInView.toFormat('X')
-    this.datePicked = this.weekInView
-    this.dateUnixValue = this.datePicked.toFormat('X')
+    this.datePicked = this.weekInView.toFormat(FORMAT_YEAR_MONTH_DAY)
+    this.dateUnixValue = this.weekInView.toFormat('X')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
@@ -95,8 +95,8 @@ class DateCarousel extends LitElement {
   _back() {
     this.weekInView = this.weekInView.minus({weeks: 1})
     this.weekUnixValue = this.weekInView.toFormat('X')
-    this.datePicked = this.weekInView
-    this.dateUnixValue = this.datePicked.toFormat('X')
+    this.datePicked = this.weekInView.toFormat(FORMAT_YEAR_MONTH_DAY)
+    this.dateUnixValue = this.weekInView.toFormat('X')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-week-change'))
   }
