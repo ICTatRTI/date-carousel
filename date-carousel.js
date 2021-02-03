@@ -35,8 +35,8 @@ class DateCarousel extends LitElement {
       now = now.reconfigure({ outputCalendar: 'ethiopic' })
     }
 
-    this.weekInView = now
-    this.weekUnixValue = now.toFormat('X') // unix timestamp in seconds
+    this.weekInView = now.startOf("week")
+    this.weekUnixValue = now.startOf("week").toFormat('X') // unix timestamp in seconds
     this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
     this.dateUnixValue = now.toFormat('X') // unix timestamp in seconds
     this._calculateDays()
@@ -117,7 +117,7 @@ class DateCarousel extends LitElement {
       now = now.reconfigure({ outputCalendar: 'ethiopic' })
     }
 
-    this.weekInView = now
+    this.weekInView = now.startOf("week")
     this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
     this.weekUnixValue = now.toFormat('X')
     this.dateUnixValue = now.toFormat('X')
