@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v5.2.1
+- Fix setting of week unix timestamp value when the 'today' button is clicked
+
 ## v5.2.0
 - Improved the month header text
 - make Monday the first day of the week in the carousel

@@ -119,7 +119,7 @@ class DateCarousel extends LitElement {
 
     this.weekInView = now.startOf("week")
     this.datePicked = now.toFormat(FORMAT_YEAR_MONTH_DAY)
-    this.weekUnixValue = now.toFormat('X')
+    this.weekUnixValue = now.startOf("week").toFormat('X')
     this.dateUnixValue = now.toFormat('X')
     this._calculateDays()
     this.dispatchEvent(new CustomEvent('on-day-pick'))
